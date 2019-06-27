@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} gjnas.serveftp\.com [NC]
+RewriteCond %{REQUEST_URI} ^/$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /webroot/$1 [L]
+RewriteRule ^.*$ webroot/index.php [NC,L,QSA]
