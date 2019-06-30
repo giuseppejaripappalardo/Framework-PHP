@@ -1,5 +1,8 @@
 <?php
 
+namespace Ijdb\Controllers;
+use \Framework\DatabaseTable;
+
 class JokesController {
 	private $authorsTable;
 	private $jokesTable;
@@ -37,7 +40,7 @@ class JokesController {
 	public function edit() {
 		if (isset($_POST['joke'])) {
 			$joke = $_POST['joke'];
-			$joke['jokedate'] = new DateTime();
+			$joke['jokedate'] = new \DateTime();
 			$joke['authorid'] = 1;
 			$this->jokesTable->save($joke);
 			header('location: /joke/index'); 

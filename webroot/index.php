@@ -9,16 +9,13 @@ try {
 	ini_set("error_log", "/logz.txt");  
 	ini_set("log_errors_max_len", 0);  
 
-	require_once(__DIR__.'/../src/classes/EntryPoint.php');
-	require_once(__DIR__ .'/../src/config/Routes.php');
-
+	include __DIR__ . '/../vendor/autoload.php';
 	$route = ltrim(strtok($_SERVER['REQUEST_URI'], '?'), '/');
-	$EntryPoint = new EntryPoint($route, new Routes());
+	$EntryPoint = new \Framework\EntryPoint($route, new \Ijdb\Routes());
 	$EntryPoint->run();
-
 }
-catch (PDOException $e) {
+catch (\PDOException $e) {
 	$title = 'An error has occurred';
 	$article = 'Database error: ' . $e->getMessage() . ' in ' .
 	$e->getFile() . ':' . $e->getLine();
-} 
+}

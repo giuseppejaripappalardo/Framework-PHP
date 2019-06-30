@@ -1,12 +1,14 @@
 <?php
 
+namespace Framework;
+
 class DatabaseTable
 {
 	private $pdo;
 	private $primaryKey;
 	private $table;
 	
-	public function __construct(PDO $pdo, string $table, string $primaryKey){
+	public function __construct(\PDO $pdo, string $table, string $primaryKey){
 		$this->pdo = $pdo;
 		$this->primaryKey = $primaryKey;
 		$this->table = $table;
@@ -20,7 +22,7 @@ class DatabaseTable
 	
 	private function processDate($fields){
 		foreach($fields as $key => $value) {
-			if ($value instanceof DateTime){
+			if ($value instanceof \DateTime){
 				$fields[$key] = $value->format('Y-m-d H:i:s');
 			}
 		}
@@ -80,7 +82,7 @@ class DatabaseTable
 				$fields[$this->primaryKey] = null;
 			}
 			$this->insert($fields);
-		} catch (PDOException $e){
+		} catch (\PDOException $e){
 			$this->update($fields);
 		}
 	}
