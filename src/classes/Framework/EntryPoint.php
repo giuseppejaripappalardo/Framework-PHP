@@ -6,10 +6,12 @@ class EntryPoint
 {
 	private $route;
 	private $routes;
+	private $method;
 	
-	public function __construct($route, $routes){
+	public function __construct(string $route, string $method, \Framework\Routes $routes){
 		$this->route = $route;
 		$this->routes = $routes;
+		$this->method = $method;
 		$this->checkUrl();
 	}
 	
@@ -29,14 +31,14 @@ class EntryPoint
 
 	public function run(){
 
-		$page = $this->routes->callAction($this->route);
+		$routes = $this->routes->getRoutes();
 
-		extract($page);
+		$controller = $routes[$this->route][$this->method]['controller'];
+		$action = $routes[$this->route][$this->method]['action'];
+
+		$page = $controller->$action();
+
 		$title = $page['title'];
-		
-		if(isset($page['error'])){
-			$error = $page['error'];
-		}
 
 		if(isset($page['variabili'])){
 			$article = $this->loadTemplate($page['template'], $page['variabili']);

@@ -36,27 +36,18 @@ class JokesController {
 		header('location: /joke/index');
 	}
 	
-	
 	public function edit() {
-		if (isset($_POST['joke'])) {
-			$joke = $_POST['joke'];
-			$joke['jokedate'] = new \DateTime();
-			$joke['authorid'] = 1;
-			$this->jokesTable->save($joke);
-			header('location: /joke/index'); 
+		$title = 'Aggiorna Joke';
+		if (isset($_GET['id'])) {
+			$joke = $this->jokesTable->findById($_GET['id']);
 		}
-		else {
-			$title = 'Inserisci Joke';
-			if (isset($_GET['id'])) {
-				$joke = $this->jokesTable->findById($_GET['id']);
-			}
-			$title = 'Inserisci Joke';
-			return ['template' => 'form.html.php',
-					'title' => $title,
-					'variabili' => [
-							'joke' => $joke ?? null
-		]
-		];
-		}
+		return ['template' => 'form.html.php', 'title' => $title, 'variabili' => [ 'joke' => $joke ?? null ]];
+	}
+	public function saveEdit(){
+		$joke = $_POST['joke'];
+		$joke['jokedate'] = new \DateTime();
+		$joke['authorid'] = 1;
+		$this->jokesTable->save($joke);
+		header('location: /joke/index'); 
 	}
 }

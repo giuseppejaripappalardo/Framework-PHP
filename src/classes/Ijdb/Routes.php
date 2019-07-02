@@ -4,41 +4,46 @@ namespace Ijdb;
 use \Ijdb\Controllers\JokesController;
 use \Framework\DatabaseTable;
 
-class Routes {
+class Routes implements \Framework\Routes {
 
-    public function callAction($route){
+    public function getRoutes(){
 
 		include(__DIR__.'/../../includes/DatabaseConnection.php');
 		
 		$jokesTable = new DatabaseTable($pdo, 'joke', 'id');
 		$authorsTable = new DatabaseTable($pdo, 'author', 'id');
-	
-		if($route == strtolower($route )){
-			if($route  === 'joke/index'){
-				$controller = new JokesController($jokesTable, $authorsTable);
-				$page = $controller->index();
-			}
-			else if($route  === 'joke/edit'){
-				$controller = new JokesController($jokesTable, $authorsTable);
-				$page = $controller->edit();
-			}
-			else if($route  === 'joke/delete'){
-				$controller = new JokesController($jokesTable, $authorsTable);
-				$page = $controller->delete();
-			}
-		/*	else if($route === 'register'){
-				$controller = new RegisterController($authorsTable);
-				$page = $controller->showForm();
-			} */
-			else if($route === ''){
-				$controller = new JokesController($jokesTable, $authorsTable);
-				$page = $controller->index();
-			} else {
-				$controller = new JokesController($jokesTable, $authorsTable);
-				$page = $controller->index();
-				$error = 'Si è verificato un errore, stai cercando una pagina inesistente';
-			}
-		}
-		return ['page' => $page, 'error' => $error ?? ''];
+		$jokesController = new JokesController($jokesTable, $authorsTable);
+		
+		$routes = [
+			'joke/index' => [
+				'GET' => [
+					'controller' => $jokesController,
+					'action' => 'index'
+				]
+				],
+				'joke/edit' => [
+					'GET' => [
+						'controller' => $jokesController,
+						'action' => 'edit'
+					],
+					'POST' => [
+						'controller' => $jokesController,
+						'action' => 'saveEdit'
+					]
+					],
+					'' => [
+						'GET' => [
+							'controller' => $jokesController,
+							'action' => 'index',
+						]
+						],
+						'joke/delete' => [
+							'POST' => [
+								'controller' => $jokesController,
+								'action' => 'delete',
+							]
+						]
+			];
+		return $routes;
 	}
 }
