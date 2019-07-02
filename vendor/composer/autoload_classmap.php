@@ -6,4 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Framework\\DatabaseTable' => $baseDir . '/src/classes/Framework/DatabaseTable.php',
+    'Framework\\EntryPoint' => $baseDir . '/src/classes/Framework/EntryPoint.php',
+    'Ijdb\\Controllers\\JokesController' => $baseDir . '/src/classes/Ijdb/Controllers/JokesController.php',
+    'Ijdb\\Routes' => $baseDir . '/src/classes/Ijdb/Routes.php',
 );

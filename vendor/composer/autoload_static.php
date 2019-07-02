@@ -28,11 +28,19 @@ class ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4
         ),
     );
 
+    public static $classMap = array (
+        'Framework\\DatabaseTable' => __DIR__ . '/../..' . '/src/classes/Framework/DatabaseTable.php',
+        'Framework\\EntryPoint' => __DIR__ . '/../..' . '/src/classes/Framework/EntryPoint.php',
+        'Ijdb\\Controllers\\JokesController' => __DIR__ . '/../..' . '/src/classes/Ijdb/Controllers/JokesController.php',
+        'Ijdb\\Routes' => __DIR__ . '/../..' . '/src/classes/Ijdb/Routes.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4::$classMap;
 
         }, null, ClassLoader::class);
     }
