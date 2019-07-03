@@ -13,11 +13,11 @@ class JokesController {
 	}
 	
 	public function index(){
-		$query = $this->jokesTable;
+		$query = $this->jokesTable->find('*');
 		$author = $this->authorsTable;
 		$joke = [];
 		
-		foreach($query->find('*') as $jokes){
+		foreach($query as $jokes){
 			$author = $this->authorsTable->findById($jokes['authorid']);
 			$joke[] = ['id' => $jokes['id'],
 					   'joketext' => $jokes['joketext'],

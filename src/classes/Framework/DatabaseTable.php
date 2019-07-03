@@ -41,6 +41,13 @@ class DatabaseTable
 		$save = $this->query($query, $fields);
 		return $save->fetch();
 	}
+
+	public function findByField($column, $value) {
+		$query = 'SELECT * FROM `' . $this->table . '` WHERE `' . $column . '` = :value';
+		$fields = ['value' => $value];
+		$save = $this->query($query, $fields);
+		return $save->fetchAll();
+	}
 	
 	public function delete(int $id){
 		$query = 'DELETE FROM ' . $this->table . ' WHERE ' . $this->primaryKey . ' = ' . $id;
@@ -64,7 +71,7 @@ class DatabaseTable
 			$this->query($query, $fields);
 	}
 	
-			private function update(array $fields){	
+		private function update(array $fields){	
 			$query = ' UPDATE `' . $this->table . '` SET ';
 			foreach($fields as $key => $value){
 				$query .= '`'. $key .'` = :' . $key . ',';
@@ -77,12 +84,14 @@ class DatabaseTable
 			}
 	
 		public function save($fields){
-			try{
+			try
+			{
 			if($fields[$this->primaryKey] == ''){
 				$fields[$this->primaryKey] = null;
 			}
 			$this->insert($fields);
-		} catch (\PDOException $e){
+		} 
+		catch (\PDOException $e){
 			$this->update($fields);
 		}
 	}

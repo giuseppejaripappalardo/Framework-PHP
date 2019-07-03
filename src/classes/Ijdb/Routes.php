@@ -13,8 +13,25 @@ class Routes implements \Framework\Routes {
 		$jokesTable = new DatabaseTable($pdo, 'joke', 'id');
 		$authorsTable = new DatabaseTable($pdo, 'author', 'id');
 		$jokesController = new JokesController($jokesTable, $authorsTable);
+		$registersController = new RegistersController($authorsTable);
 		
 		$routes = [
+			'author/register' => [
+				'GET' => [
+					'controller' => $registersController,
+					'action' => 'registrationForm'
+				],
+				'POST' => [
+					'controller' => $registersController,
+					'action' => 'registerUser'
+				]
+			],
+				'author/success' => [
+					'GET' => [
+						'controller' => $registersController,
+						'action' => 'success'
+					]
+				],
 			'joke/index' => [
 				'GET' => [
 					'controller' => $jokesController,
