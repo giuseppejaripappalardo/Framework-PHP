@@ -1,11 +1,14 @@
 <?php if(!empty($error)): ?>
-<div class="alert alert-danger" role="alert">
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
 <p>Non è possibile creare l'account, verifica il motivo:</p>
 <ul>
 <?php foreach($error as $errors): ?>
 <?= '<li>' . $errors . '</li>' ?>
 <?php endforeach ?> 
 </ul>
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
 <?php endif ?>
 
