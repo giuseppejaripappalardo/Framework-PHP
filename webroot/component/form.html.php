@@ -1,4 +1,5 @@
 <div class="container">
+<?php if($userId == $joke['authorid'] || $joke['authorid'] == null): ?>
   <form class="was-validated" action="/joke/edit" method="post">
     <div class="mb-3">
       <label for="validationTextarea">Inserisci Barzelletta</label>
@@ -10,4 +11,12 @@
     </div>
     <center><button class="btn btn-primary" type="submit">Inserisci</button></center>
   </form>
+  <?php else: ?> 
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <p>Non sei autorizzato a svolgere questa azione. Non sei tu l'autore di questo articolo.</p>
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+  <?php endif; ?>
 </div>

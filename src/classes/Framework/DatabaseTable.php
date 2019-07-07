@@ -7,11 +7,15 @@ class DatabaseTable
 	private $pdo;
 	private $primaryKey;
 	private $table;
+	private $className;
+	private $constructorArgs;
 	
-	public function __construct(\PDO $pdo, string $table, string $primaryKey){
+	public function __construct(\PDO $pdo, string $table, string $primaryKey, string $className = '\stdClass', array $constructorArgs = []){
 		$this->pdo = $pdo;
 		$this->primaryKey = $primaryKey;
 		$this->table = $table;
+		$this->className = $className;
+		$this->constructorArgs = $constructorArgs;
 	}
 	
 	private function query(string $sql, array $fields = []){

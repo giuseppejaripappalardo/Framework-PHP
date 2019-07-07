@@ -2,17 +2,20 @@
 
 namespace Ijdb\Controllers;
 use \Framework\DatabaseTable;
+use \Framework\Authentication;
 
 class JokesController {
 	private $authorsTable;
 	private $jokesTable;
 	
-	public function __construct(DatabaseTable $jokesTable, DatabaseTable $authorsTable){
+	public function __construct(DatabaseTable $jokesTable, DatabaseTable $authorsTable, Authentication $authentication){
 		$this->authorsTable = $authorsTable;
 		$this->jokesTable = $jokesTable;
+		$this->authentication = $authentication;
 	}
 	
 	public function index(){
+		$authInfo = $this->authentication->getUser();
 		$query = $this->jokesTable->find('*');
 		$author = $this->authorsTable;
 		$joke = [];
@@ -28,26 +31,45 @@ class JokesController {
 		}
 		$title = 'Benvenuto nel blog dei Joke!';
 		
-		return ['title' => $title, 'variabili' => ['joke' => $joke], 'template' => 'article.html.php'];
+		return ['title' => $title, 'variabili' => ['joke' => $joke, 'userId' => $authInfo['id'] ?? null], 'template' => 'article.html.php'];
 	}
 	
 	public function delete(){
+
+		$author = $this->authentication->getUser();
+		
+		$joke = $this->jokesTable->findById($_POST['id']);
+		
+		if($joke['authorid'] != $author['id']){
+				return;
+		}
+
 		$delete = $this->jokesTable->delete($_POST['id']);
 		header('location: /joke/index');
 	}
 	
 	public function edit() {
-		$title = 'Aggiorna Joke';
+		$author = $this->authentication->getUser();
+		
 		if (isset($_GET['id'])) {
 			$joke = $this->jokesTable->findById($_GET['id']);
 		}
-		return ['template' => 'form.html.php', 'title' => $title, 'variabili' => [ 'joke' => $joke ?? null ]];
+
+		$title = 'Aggiorna Joke';
+		return ['template' => 'form.html.php', 'title' => $title, 'variabili' => [ 'joke' => $joke ?? null , 'userId' => $author['id']]];
 	}
 	public function saveEdit(){
+		$author = $this->authentication->getUser();
+		$authorObj = new /Ijdb/Entity/Author($this->jokesTable);
+
+		$authorObj->id = $author['id'];
+		$authorObj->name = $author['name'];
+		$authorObj->email = $author['email'];
+		$authorObj->password = $author['password'];
 		$joke = $_POST['joke'];
 		$joke['jokedate'] = new \DateTime();
-		$joke['authorid'] = 1;
-		$this->jokesTable->save($joke);
+
+		$authorObj->addJoke($joke);
 		header('location: /joke/index'); 
 	}
 }

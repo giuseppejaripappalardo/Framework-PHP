@@ -29,10 +29,12 @@ class ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4
     );
 
     public static $classMap = array (
+        'Framework\\Authentication' => __DIR__ . '/../..' . '/src/classes/Framework/Authentication.php',
         'Framework\\DatabaseTable' => __DIR__ . '/../..' . '/src/classes/Framework/DatabaseTable.php',
         'Framework\\EntryPoint' => __DIR__ . '/../..' . '/src/classes/Framework/EntryPoint.php',
         'Framework\\Routes' => __DIR__ . '/../..' . '/src/classes/Framework/Routes.php',
         'Ijdb\\Controllers\\JokesController' => __DIR__ . '/../..' . '/src/classes/Ijdb/Controllers/JokesController.php',
+        'Ijdb\\Controllers\\LoginController' => __DIR__ . '/../..' . '/src/classes/Ijdb/Controllers/LoginController.php',
         'Ijdb\\RegistersController' => __DIR__ . '/../..' . '/src/classes/Ijdb/Controllers/RegistersController.php',
         'Ijdb\\Routes' => __DIR__ . '/../..' . '/src/classes/Ijdb/Routes.php',
     );

@@ -9,10 +9,11 @@
 				<li class="nav-item active">
 				<a class="nav-link" href="/joke/index">Home <span class="sr-only">(current)</span></a>
 				</li>
-				
+				<?php if($loggedIn): ?>
 				<li class="nav-item active">
 				<a class="nav-link" href="/joke/edit">Inserisci Joke <span class="sr-only">(current)</span></a>
 				</li>
+				<?php endif; ?>
 			</ul>
 		<?php if(isset($joke)): ?>
 		<button type="button" class="btn btn-primary">
@@ -23,9 +24,12 @@
 			</span>
 		</button>
 		<?php endif;?>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search" placeholder="Cerca" aria-label="Search">
-			<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Cerca</button>
-		</form>
+			<form class="form-inline my-2 my-lg-0" action="" method="GET">
+				<?php if($loggedIn): ?>
+				<a href="/logout" class="btn btn-outline-light my-2 my-sm-0" role="button">Esci</a>
+				<?php else: ?>
+				<a href="/login" class="btn btn-outline-light my-2 my-sm-0" role="button">Accedi</a>
+				<?php endif; ?>
+			</form>
 		</div>
 	</nav>

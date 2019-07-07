@@ -22,7 +22,8 @@ class EntryPoint
 		}
 	}
 	
-	private function loadTemplate($templateFileName, $variabili = []) {
+	private function loadTemplate($templateFileName, $variabili = [], $authCheck = null) {
+		$loggedIn = $authCheck;
 		extract($variabili);
 		ob_start();
 		include(__DIR__ . '/../../../webroot/component/' . $templateFileName);
@@ -32,7 +33,11 @@ class EntryPoint
 	public function run(){
 
 		$routes = $this->routes->getRoutes();
+		$authentication = $this->routes->getAuthentication();
 
+		if(isset($routes[$this->route]['login']) && !$authentication->isLoggedIn()){
+			header('location: /login/error');
+		} else {
 		$controller = $routes[$this->route][$this->method]['controller'];
 		$action = $routes[$this->route][$this->method]['action'];
 
@@ -41,14 +46,14 @@ class EntryPoint
 		$title = $page['title'];
 
 		if(isset($page['variabili'])){
-			$article = $this->loadTemplate($page['template'], $page['variabili']);
+			$output = $this->loadTemplate($page['template'], $page['variabili'], $authentication->isLoggedIn());
 		} else {
-			$article = $this->loadTemplate($page['template']);
+			$output = $this->loadTemplate($page['template']);
 		}
 
-		ob_start();
-		include(__DIR__ . '/../../../webroot/component/menu.html.php');
-		$menu = ob_get_clean();
-		include(__DIR__ . '/../../../webroot/templates/layout.html.php');
+		$menu = $this->loadTemplate('menu.html.php', ['loggedIn' => $authentication->isLoggedIn()]);
+
+		echo $this->loadTemplate('layout.html.php', ['output' => $output, 'menu' => $menu, 'title' => $title]);
+		}
 	}
 }

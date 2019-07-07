@@ -6,10 +6,12 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Framework\\Authentication' => $baseDir . '/src/classes/Framework/Authentication.php',
     'Framework\\DatabaseTable' => $baseDir . '/src/classes/Framework/DatabaseTable.php',
     'Framework\\EntryPoint' => $baseDir . '/src/classes/Framework/EntryPoint.php',
     'Framework\\Routes' => $baseDir . '/src/classes/Framework/Routes.php',
     'Ijdb\\Controllers\\JokesController' => $baseDir . '/src/classes/Ijdb/Controllers/JokesController.php',
+    'Ijdb\\Controllers\\LoginController' => $baseDir . '/src/classes/Ijdb/Controllers/LoginController.php',
     'Ijdb\\RegistersController' => $baseDir . '/src/classes/Ijdb/Controllers/RegistersController.php',
     'Ijdb\\Routes' => $baseDir . '/src/classes/Ijdb/Routes.php',
 );

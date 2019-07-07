@@ -3,64 +3,103 @@
 namespace Ijdb;
 use \Ijdb\Controllers\JokesController;
 use \Framework\DatabaseTable;
+use \Framework\Authentication;
 
 class Routes implements \Framework\Routes {
 
-    public function getRoutes(){
+		private $authorsTable;
+		private $jokesTable;
+		private $authentication;
 
-		include(__DIR__.'/../../includes/DatabaseConnection.php');
+		public function __construct()
+		{
+			include(__DIR__.'/../../includes/DatabaseConnection.php');
+			$this->jokesTable = new DatabaseTable($pdo, 'joke', 'id');
+			$this->authorsTable = new DatabaseTable($pdo, 'author', 'id');
+			$this->authentication = new Authentication($this->authorsTable, 'username', 'password');
+		}
 		
-		$jokesTable = new DatabaseTable($pdo, 'joke', 'id');
-		$authorsTable = new DatabaseTable($pdo, 'author', 'id');
-		$jokesController = new JokesController($jokesTable, $authorsTable);
-		$registersController = new RegistersController($authorsTable);
-		
-		$routes = [
-			'author/register' => [
-				'GET' => [
-					'controller' => $registersController,
-					'action' => 'registrationForm'
-				],
-				'POST' => [
-					'controller' => $registersController,
-					'action' => 'registerUser'
-				]
-			],
-				'author/success' => [
+		public function getRoutes() : array
+		{
+			$jokesController = new JokesController($this->jokesTable, $this->authorsTable, $this->authentication);
+			$registersController = new RegistersController($this->authorsTable);
+			$loginController = new \Ijdb\Controllers\LoginController($this->authentication);
+
+			$routes = [
+				'author/register' => [
 					'GET' => [
 						'controller' => $registersController,
-						'action' => 'success'
-					]
-				],
-			'joke/index' => [
-				'GET' => [
-					'controller' => $jokesController,
-					'action' => 'index'
-				]
-				],
-				'joke/edit' => [
-					'GET' => [
-						'controller' => $jokesController,
-						'action' => 'edit'
+						'action' => 'registrationForm'
 					],
 					'POST' => [
-						'controller' => $jokesController,
-						'action' => 'saveEdit'
+						'controller' => $registersController,
+						'action' => 'registerUser'
 					]
+				],
+					'author/success' => [
+						'GET' => [
+							'controller' => $registersController,
+							'action' => 'success'
+						]
 					],
-					'' => [
+				'joke/index' => [
+					'GET' => [
+						'controller' => $jokesController,
+						'action' => 'index'
+					],
+					],
+					'joke/edit' => [
 						'GET' => [
 							'controller' => $jokesController,
-							'action' => 'index',
-						]
+							'action' => 'edit'
 						],
-						'joke/delete' => [
-							'POST' => [
+						'POST' => [
+							'controller' => $jokesController,
+							'action' => 'saveEdit'
+						],
+						'login' => true,
+						],
+						'' => [
+							'GET' => [
 								'controller' => $jokesController,
-								'action' => 'delete',
+								'action' => 'index',
+							]
+							],
+						'joke/delete' => [
+								'POST' => [
+									'controller' => $jokesController,
+									'action' => 'delete',
+								],
+								'login' => 'true'
+							],
+						'login/error' => [
+								'GET' => [
+									'controller' => $loginController,
+									'action' => 'error'
+								]
+								],
+						'login' => [
+								'GET' => [
+									'controller' => $loginController,
+									'action' => 'loginForm'
+								],
+								'POST' => [
+									'controller' =>  $loginController,
+									'action' => 'processLogin'
+							]
+							],
+						'logout' => [
+							'GET' => [
+							'controller' => $loginController,
+							'action' => 'logout'
 							]
 						]
-			];
-		return $routes;
+				];
+			return $routes;
+	}
+
+	public function getAuthentication() : Authentication
+	{
+		return $this->authentication;
 	}
 }

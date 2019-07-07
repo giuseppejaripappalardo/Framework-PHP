@@ -2,7 +2,8 @@
 
 namespace Framework;
 
-interface Routes 
+interface Routes
 {
-    public function getRoutes();
+    public function getRoutes() : array;
+    public function getAuthentication() : \Framework\Authentication;
 }
