@@ -15,7 +15,7 @@ class Routes implements \Framework\Routes {
 		{
 			include(__DIR__.'/../../includes/DatabaseConnection.php');
 			$this->jokesTable = new DatabaseTable($pdo, 'joke', 'id');
-			$this->authorsTable = new DatabaseTable($pdo, 'author', 'id');
+			$this->authorsTable = new DatabaseTable($pdo, 'author', 'id', '\Ijdb\Entity\Author', [$this->jokesTable]);
 			$this->authentication = new Authentication($this->authorsTable, 'username', 'password');
 		}
 		

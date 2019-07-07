@@ -60,16 +60,12 @@ class JokesController {
 	}
 	public function saveEdit(){
 		$author = $this->authentication->getUser();
-		$authorObj = new /Ijdb/Entity/Author($this->jokesTable);
 
-		$authorObj->id = $author['id'];
-		$authorObj->name = $author['name'];
-		$authorObj->email = $author['email'];
-		$authorObj->password = $author['password'];
 		$joke = $_POST['joke'];
 		$joke['jokedate'] = new \DateTime();
 
-		$authorObj->addJoke($joke);
+		$author->addJoke($joke);
+
 		header('location: /joke/index'); 
 	}
 }

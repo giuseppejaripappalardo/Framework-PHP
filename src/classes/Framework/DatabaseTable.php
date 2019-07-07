@@ -36,21 +36,21 @@ class DatabaseTable
 	public function find($fields) {
 		$query = 'SELECT ' . $fields . ' FROM ' . $this->table;
 		$save = $this->query($query);
-		return $save->fetchAll();
+		return $save->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
 	
 	public function findById(int $value) {
 		$query = 'SELECT * FROM `' . $this->table . '` WHERE `' . $this->primaryKey . '` = :value';
 		$fields = ['value' => $value];
 		$save = $this->query($query, $fields);
-		return $save->fetch();
+		return $save->fetchObject($this->className, $this->constructorArgs);
 	}
 
 	public function findByField($column, $value) {
 		$query = 'SELECT * FROM `' . $this->table . '` WHERE `' . $column . '` = :value';
 		$fields = ['value' => $value];
 		$save = $this->query($query, $fields);
-		return $save->fetchAll();
+		return $save->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
 	
 	public function delete(int $id){
