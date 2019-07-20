@@ -4,7 +4,6 @@ namespace Framework;
 
 class Authentication
 {
-
     private $users;
     private $usernameColumn;
     private $passwordColumn;
@@ -38,7 +37,6 @@ class Authentication
         }
 
         $user = $this->users->findByField($this->usernameColumn, strtolower($_SESSION['username']));
-
 
         if(!empty($user) && $user[0]->{$this->passwordColumn} === $_SESSION['password']){
             return true;

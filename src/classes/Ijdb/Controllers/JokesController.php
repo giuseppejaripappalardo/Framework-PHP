@@ -15,23 +15,21 @@ class JokesController {
 	}
 	
 	public function index(){
-		$authInfo = $this->authentication->getUser();
-		$query = $this->jokesTable->find('*');
-		$author = $this->authorsTable;
-		$joke = [];
-		
-		foreach($query as $jokes){
-			$author = $this->authorsTable->findById($jokes['authorid']);
-			$joke[] = ['id' => $jokes['id'],
-					   'joketext' => $jokes['joketext'],
-					   'jokedate' => $jokes['jokedate'],
-					   'authorid' => $jokes['authorid'],
-					   'name' => $author['name'],
-					   'email' => $author['email']];
-		}
+		$joke = $this->jokesTable->find('*');
+		$author = $this->authorsTable->findById($joke->authorid);
+
+		$jokes[] = [
+			'id' => $joke->id,
+			'joketext' => $joke->joketext,
+			'jokedate' => $joke->jokedate,
+			'authorid' => $joke->authorid,
+			'name' => $author->name,
+			'email' => $author->email
+		];
+
 		$title = 'Benvenuto nel blog dei Joke!';
 		
-		return ['title' => $title, 'variabili' => ['joke' => $joke, 'userId' => $authInfo['id'] ?? null], 'template' => 'article.html.php'];
+		return ['title' => $title, 'variabili' => ['joke' => $jokes, 'userId' => $author->id] ?? null], 'template' => 'article.html.php'];
 	}
 	
 	public function delete(){
@@ -40,7 +38,7 @@ class JokesController {
 		
 		$joke = $this->jokesTable->findById($_POST['id']);
 		
-		if($joke['authorid'] != $author['id']){
+		if($joke->authorid != $author->id){
 				return;
 		}
 

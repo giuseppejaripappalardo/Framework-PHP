@@ -75,21 +75,21 @@ class DatabaseTable
 			$this->query($query, $fields);
 	}
 	
-		private function update(array $fields){	
-			$query = ' UPDATE `' . $this->table . '` SET ';
-			foreach($fields as $key => $value){
-				$query .= '`'. $key .'` = :' . $key . ',';
-			}
-			$query =  rtrim($query, ', ');
-			$query.= ' WHERE `' . $this->primaryKey . '` = :primaryKey';
-			$fields['primaryKey'] = $fields['id'];
-			$fields = $this->processDate($fields);
-			$this->query($query, $fields);
-			}
+	private function update(array $fields)
+	{	
+		$query = ' UPDATE `' . $this->table . '` SET ';
+		foreach($fields as $key => $value){
+			$query .= '`'. $key .'` = :' . $key . ',';
+		}
+		$query =  rtrim($query, ', ');
+		$query.= ' WHERE `' . $this->primaryKey . '` = :primaryKey';
+		$fields['primaryKey'] = $fields['id'];
+		$fields = $this->processDate($fields);
+		$this->query($query, $fields);
+	}
 	
-		public function save($fields){
-			try
-			{
+	public function save($fields){
+		try {
 			if($fields[$this->primaryKey] == ''){
 				$fields[$this->primaryKey] = null;
 			}
