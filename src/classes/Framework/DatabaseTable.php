@@ -33,8 +33,8 @@ class DatabaseTable
 		return $fields;
 	}
 	
-	public function find($fields) {
-		$query = 'SELECT ' . $fields . ' FROM ' . $this->table;
+	public function findAll() {
+		$query = 'SELECT * FROM ' . $this->table;
 		$save = $this->query($query);
 		return $save->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}

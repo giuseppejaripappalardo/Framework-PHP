@@ -7,29 +7,19 @@ use \Framework\Authentication;
 class JokesController {
 	private $authorsTable;
 	private $jokesTable;
+	private $authentication;
 	
 	public function __construct(DatabaseTable $jokesTable, DatabaseTable $authorsTable, Authentication $authentication){
 		$this->authorsTable = $authorsTable;
 		$this->jokesTable = $jokesTable;
 		$this->authentication = $authentication;
 	}
-	
+
 	public function index(){
-		$joke = $this->jokesTable->find('*');
-		$author = $this->authorsTable->findById($joke->authorid);
-
-		$jokes[] = [
-			'id' => $joke->id,
-			'joketext' => $joke->joketext,
-			'jokedate' => $joke->jokedate,
-			'authorid' => $joke->authorid,
-			'name' => $author->name,
-			'email' => $author->email
-		];
-
+	    $jokes = $this->jokesTable->findAll();
 		$title = 'Benvenuto nel blog dei Joke!';
 		
-		return ['title' => $title, 'variabili' => ['joke' => $jokes, 'userId' => $author->id] ?? null], 'template' => 'article.html.php'];
+		return ['title' => $title, 'variabili' => ['joke' => $jokes], 'template' => 'article.html.php'];
 	}
 	
 	public function delete(){
@@ -54,7 +44,7 @@ class JokesController {
 		}
 
 		$title = 'Aggiorna Joke';
-		return ['template' => 'form.html.php', 'title' => $title, 'variabili' => [ 'joke' => $joke ?? null , 'userId' => $author['id']]];
+		return ['template' => 'form.html.php', 'title' => $title, 'variabili' => [ 'joke' => $joke ?? null , 'userId' => $author->id]];
 	}
 	public function saveEdit(){
 		$author = $this->authentication->getUser();

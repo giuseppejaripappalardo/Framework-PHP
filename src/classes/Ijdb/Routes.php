@@ -5,6 +5,7 @@ use \Ijdb\Controllers\JokesController;
 use \Framework\DatabaseTable;
 use \Framework\Authentication;
 
+
 class Routes implements \Framework\Routes {
 
 		private $authorsTable;
@@ -14,11 +15,11 @@ class Routes implements \Framework\Routes {
 		public function __construct()
 		{
 			include(__DIR__.'/../../includes/DatabaseConnection.php');
-			$this->jokesTable = new DatabaseTable($pdo, 'joke', 'id');
-			$this->authorsTable = new DatabaseTable($pdo, 'author', 'id', '\Ijdb\Entity\Author', [$this->jokesTable]);
+			$this->jokesTable = new DatabaseTable($pdo, 'joke', 'id', '\Ijdb\Entity\Joke', [&$this->authorsTable]);
+			$this->authorsTable = new DatabaseTable($pdo, 'author', 'id', '\Ijdb\Entity\Author', [&$this->jokesTable]);
 			$this->authentication = new Authentication($this->authorsTable, 'username', 'password');
 		}
-		
+
 		public function getRoutes() : array
 		{
 			$jokesController = new JokesController($this->jokesTable, $this->authorsTable, $this->authentication);

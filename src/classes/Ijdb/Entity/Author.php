@@ -1,7 +1,7 @@
 <?php
 
-namespace \Ijdb\Entity;
-use \Framework\Databasetable;
+namespace Ijdb\Entity;
+use \Framework\DatabaseTable;
 
 class Author 
 {
@@ -17,7 +17,7 @@ class Author
         $this->jokesTable = $jokesTable;
     }
 
-    public function getJoke()
+    public function getJokes()
     {
         return $this->jokesTable->findByField('authorid', $this->id);
     }
