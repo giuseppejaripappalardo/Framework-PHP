@@ -9,6 +9,20 @@
         Inserisci una barzelletta nella text area.
       </div>
     </div>
+      
+      <p>Seleziona una categoria:</p>
+	  <?php foreach($categories as $category): ?>
+          <div class="form-check">
+              <?php if($joke && $joke->hasCategory($category->id)): ?>
+              <input class="form-check-input" type="checkbox" checked name="category[]" value="<?= $category->id ?>">
+              <?php else: ?>
+              <input class="form-check-input" type="checkbox" name="category[]" value="<?= $category->id ?>">
+              <?php endif ?>
+              <label class="form-check-label">
+                  <?= $category->name ?>
+              </label>
+          </div>
+	  <?php endforeach ?>
     <center><button class="btn btn-primary" type="submit">Inserisci</button></center>
   </form>
   <?php else: ?> 

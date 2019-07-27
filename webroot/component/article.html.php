@@ -1,4 +1,17 @@
 <div class="row">
+    
+    <div class="container-fluid">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filtri di ricerca
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+	            <?php foreach ($categories as $category): ?>
+                <a class="dropdown-item" href="\joke\index?category=<?=$category->id;?>"> <?= $category->name ?> </a>
+	            <?php endforeach ?>
+            </div>
+        </div>
+    </div>
     <article class="container">
         <?php if(isset($joke)): ?>
         <?php foreach($joke as $article): ?>

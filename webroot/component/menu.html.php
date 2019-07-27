@@ -13,8 +13,17 @@
 				<li class="nav-item active">
 				<a class="nav-link" href="/joke/edit">Inserisci Joke <span class="sr-only">(current)</span></a>
 				</li>
-				<?php endif; ?>
-			</ul>
+            </ul>
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Categorie
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <a class="nav-link" href="/category/index">Lista <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/category/edit">Inserisci <span class="sr-only">(current)</span></a>
+                </div>
+            </div>
+			<?php endif; ?>
 		<?php if(isset($joke)): ?>
 		<button type="button" class="btn btn-primary">
 			Joke in Database <span class="badge badge-danger">

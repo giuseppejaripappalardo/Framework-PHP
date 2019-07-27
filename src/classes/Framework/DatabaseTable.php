@@ -53,6 +53,12 @@ class DatabaseTable
 		return $save->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
 	
+	public function deleteWhere($column, $value) {
+		$query = 'DELETE FROM `' . $this->table . '` WHERE `' . $column . '` = :value';
+		$fields = ['value' => $value];
+		$save = $this->query($query, $fields);
+	}
+	
 	public function delete(int $id){
 		$query = 'DELETE FROM ' . $this->table . ' WHERE ' . $this->primaryKey . ' = ' . $id;
 		$this->query($query);
@@ -73,6 +79,7 @@ class DatabaseTable
 			$query .= ')';
 			$fields = $this->processDate($fields);
 			$this->query($query, $fields);
+			return $this->pdo->lastInsertId();
 	}
 	
 	private function update(array $fields)
@@ -89,14 +96,22 @@ class DatabaseTable
 	}
 	
 	public function save($fields){
+		$entity = new $this->className(...$this->constructorArgs);
 		try {
 			if($fields[$this->primaryKey] == ''){
 				$fields[$this->primaryKey] = null;
 			}
-			$this->insert($fields);
+			$insertId = $this->insert($fields);
+			$entity->{$this->primaryKey} = $insertId;
 		} 
 		catch (\PDOException $e){
 			$this->update($fields);
 		}
+		foreach($fields as $key => $value){
+			if(!empty($value)){
+				$entity->$key = $value;
+			}
+		}
+		return $entity;
 	}
 }

@@ -7,19 +7,27 @@ use \Framework\Authentication;
 class JokesController {
 	private $authorsTable;
 	private $jokesTable;
+	private $categoriesTable;
 	private $authentication;
 	
-	public function __construct(DatabaseTable $jokesTable, DatabaseTable $authorsTable, Authentication $authentication){
+	public function __construct(DatabaseTable $jokesTable, DatabaseTable $authorsTable, DatabaseTable $categoriesTable, Authentication $authentication){
 		$this->authorsTable = $authorsTable;
 		$this->jokesTable = $jokesTable;
+		$this->categoriesTable = $categoriesTable;
 		$this->authentication = $authentication;
 	}
 
 	public function index(){
-	    $jokes = $this->jokesTable->findAll();
+		if(isset($_GET['category'])) {
+			$category = $this->categoriesTable->findById($_GET['category']);
+			$jokes = $category->getJokes();
+		} else {
+			$jokes = $this->jokesTable->findAll();
+		}
+	 
 		$title = 'Benvenuto nel blog dei Joke!';
 		
-		return ['title' => $title, 'variabili' => ['joke' => $jokes], 'template' => 'article.html.php'];
+		return ['title' => $title, 'variabili' => ['joke' => $jokes, 'categories' => $this->categoriesTable->findAll()], 'template' => 'article.html.php'];
 	}
 	
 	public function delete(){
@@ -38,22 +46,23 @@ class JokesController {
 	
 	public function edit() {
 		$author = $this->authentication->getUser();
-		
+		$categories = $this->categoriesTable->findAll();
 		if (isset($_GET['id'])) {
 			$joke = $this->jokesTable->findById($_GET['id']);
+			$title = 'Aggiorna Joke';
 		}
-
-		$title = 'Aggiorna Joke';
-		return ['template' => 'form.html.php', 'title' => $title, 'variabili' => [ 'joke' => $joke ?? null , 'userId' => $author->id]];
+		$title = 'Inserisci un Joke';
+		return ['template' => 'form.html.php', 'title' => $title, 'variabili' => [ 'joke' => $joke ?? null, 'userId' => $author->id, 'categories' => $categories]];
 	}
 	public function saveEdit(){
 		$author = $this->authentication->getUser();
-
 		$joke = $_POST['joke'];
 		$joke['jokedate'] = new \DateTime();
-
-		$author->addJoke($joke);
-
-		header('location: /joke/index'); 
+		$jokeEntity = $author->addJoke($joke);
+		$jokeEntity->clearCategories();
+		foreach($_POST['category'] as $categoryId){
+			$jokeEntity->addCategory($categoryId);
+		}
+		header('location: /joke/index');
 	}
 }
