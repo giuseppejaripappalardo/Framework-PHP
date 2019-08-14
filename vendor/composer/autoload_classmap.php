@@ -6,4 +6,19 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Framework\\Authentication' => $baseDir . '/src/classes/Framework/Authentication.php',
+    'Framework\\DatabaseTable' => $baseDir . '/src/classes/Framework/DatabaseTable.php',
+    'Framework\\EntryPoint' => $baseDir . '/src/classes/Framework/EntryPoint.php',
+    'Framework\\Markdown' => $baseDir . '/src/classes/Framework/Markdown.php',
+    'Framework\\Routes' => $baseDir . '/src/classes/Framework/Routes.php',
+    'Ijdb\\Controllers\\CategorysController' => $baseDir . '/src/classes/Ijdb/Controllers/CategorysController.php',
+    'Ijdb\\Controllers\\JokesController' => $baseDir . '/src/classes/Ijdb/Controllers/JokesController.php',
+    'Ijdb\\Controllers\\LoginController' => $baseDir . '/src/classes/Ijdb/Controllers/LoginController.php',
+    'Ijdb\\Entity\\Author' => $baseDir . '/src/classes/Ijdb/Entity/Author.php',
+    'Ijdb\\Entity\\Category' => $baseDir . '/src/classes/Ijdb/Entity/Category.php',
+    'Ijdb\\Entity\\Joke' => $baseDir . '/src/classes/Ijdb/Entity/Joke.php',
+    'Ijdb\\RegistersController' => $baseDir . '/src/classes/Ijdb/Controllers/RegistersController.php',
+    'Ijdb\\Routes' => $baseDir . '/src/classes/Ijdb/Routes.php',
+    'Parsedown' => $vendorDir . '/erusev/parsedown/Parsedown.php',
+    'ParsedownTest' => $vendorDir . '/erusev/parsedown/test/ParsedownTest.php',
 );

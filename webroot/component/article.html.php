@@ -20,7 +20,7 @@
             <div class="card-body" style="padding:7px;">
                 <div class="card-header bg-light mb-3 text-dark"><h6 class="card-title">Barzelletta <?=$article->id;?></h6></div>
                 <p class="card-text text-justify" style="margin-top:10px;">
-                <?=  (new \Framework\Markdown($article->joketext))->toHtml(); ?>
+                <?=  (new Parsedown())->text($article->joketext); ?>
             </p>
     <?php if($user):?>
             <div class="btn-group">
