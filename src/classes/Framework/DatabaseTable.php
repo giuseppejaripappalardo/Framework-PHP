@@ -33,8 +33,11 @@ class DatabaseTable
 		return $fields;
 	}
 	
-	public function findAll() {
+	public function findAll($orderBy = null) {
 		$query = 'SELECT * FROM ' . $this->table;
+		if($orderBy != null){
+			$query .= ' ORDER BY ' . $orderBy;
+		}
 		$save = $this->query($query);
 		return $save->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
@@ -46,9 +49,12 @@ class DatabaseTable
 		return $save->fetchObject($this->className, $this->constructorArgs);
 	}
 
-	public function findByField($column, $value) {
+	public function findByField($column, $value, $orderBy = null) {
 		$query = 'SELECT * FROM `' . $this->table . '` WHERE `' . $column . '` = :value';
 		$fields = ['value' => $value];
+		if($orderBy != null){
+			$query .= ' ORDER BY ' . $orderBy;
+		}
 		$save = $this->query($query, $fields);
 		return $save->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}

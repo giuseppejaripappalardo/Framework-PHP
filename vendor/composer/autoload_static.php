@@ -28,15 +28,14 @@ class ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4
         ),
     );
 
-    public static $classMap = array (
-        'Framework\\Authentication' => __DIR__ . '/../..' . '/src/classes/Framework/Authentication.php',
-        'Framework\\DatabaseTable' => __DIR__ . '/../..' . '/src/classes/Framework/DatabaseTable.php',
-        'Framework\\EntryPoint' => __DIR__ . '/../..' . '/src/classes/Framework/EntryPoint.php',
-        'Framework\\Routes' => __DIR__ . '/../..' . '/src/classes/Framework/Routes.php',
-        'Ijdb\\Controllers\\JokesController' => __DIR__ . '/../..' . '/src/classes/Ijdb/Controllers/JokesController.php',
-        'Ijdb\\Controllers\\LoginController' => __DIR__ . '/../..' . '/src/classes/Ijdb/Controllers/LoginController.php',
-        'Ijdb\\RegistersController' => __DIR__ . '/../..' . '/src/classes/Ijdb/Controllers/RegistersController.php',
-        'Ijdb\\Routes' => __DIR__ . '/../..' . '/src/classes/Ijdb/Routes.php',
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Parsedown' => 
+            array (
+                0 => __DIR__ . '/..' . '/erusev/parsedown',
+            ),
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -44,7 +43,7 @@ class ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4::$classMap;
+            $loader->prefixesPsr0 = ComposerStaticInit07c6726c781f49051b1c7fdaeac59fe4::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

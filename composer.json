@@ -14,5 +14,8 @@
             "Framework\\": "src/classes/Framework",
             "Ijdb\\": "src/classes/Ijdb"
         }
+    },
+    "require": {
+        "erusev/parsedown": "^1.7"
     }
 }

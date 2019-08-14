@@ -19,7 +19,9 @@
         <div class="card text-black bg-light shadow pt-0 mt-5 rounded w-100" style="margin-top:10px;">
             <div class="card-body" style="padding:7px;">
                 <div class="card-header bg-light mb-3 text-dark"><h6 class="card-title">Barzelletta <?=$article->id;?></h6></div>
-                <p class="card-text text-justify" style="margin-top:10px;"><?= htmlspecialchars($article->joketext, ENT_QUOTES, 'UTF-8')?></p>
+                <p class="card-text text-justify" style="margin-top:10px;">
+                <?=  (new \Framework\Markdown($article->joketext))->toHtml(); ?>
+            </p>
     <?php if($user):?>
             <div class="btn-group">
             <?php if($loggedIn && $article->authorid == $user->id || $user->hasPermission(\Ijdb\Entity\Author::EDIT_JOKES)): ?>
