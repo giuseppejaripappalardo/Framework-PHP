@@ -20,20 +20,26 @@
             <div class="card-body" style="padding:7px;">
                 <div class="card-header bg-light mb-3 text-dark"><h6 class="card-title">Barzelletta <?=$article->id;?></h6></div>
                 <p class="card-text text-justify" style="margin-top:10px;"><?= htmlspecialchars($article->joketext, ENT_QUOTES, 'UTF-8')?></p>
-     <?php if($loggedIn && $article->authorid == $article->authorid): ?>
+    <?php if($user):?>
             <div class="btn-group">
+            <?php if($loggedIn && $article->authorid == $user->id || $user->hasPermission(\Ijdb\Entity\Author::EDIT_JOKES)): ?>
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Azioni
                 </button>
+            <?php endif ?>
                 <div class="dropdown-menu">
+                <?php if($loggedIn && $article->authorid == $user->id || $user->hasPermission(\Ijdb\Entity\Author::EDIT_JOKES)): ?>
                         <a href="/joke/edit?id=<?=$article->id ?>" class="dropdown-item">Aggiorna</a>
+                <?php endif ?>
+                <?php if($loggedIn && $article->authorid == $user->id || $user->hasPermission(\Ijdb\Entity\Author::DELETE_JOKES)): ?>
                         <form action="/joke/delete" method="post" class="dropdown-item">
                             <button type="submit" class="btn btn-danger">Elimina</button>
                             <input type="hidden" name="id" value="<?=$article->id;?>"/>
                         </form>
+                <?php endif ?>
                 </div>
             </div>
-        <?php endif; ?>
+        <?php endif ?>
         </div>
         <div class="card-footer text-justify"><small>ID: <?=$article->id;?> - Data creazione: <?= $date->format('d-m-Y H:i:s');?> - Autore <?= $article->getAuthor()->name; ?></small></div>
         </div>

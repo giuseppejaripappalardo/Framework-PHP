@@ -18,16 +18,19 @@ class JokesController {
 	}
 
 	public function index(){
+		$author = $this->authentication->getUser();
 		if(isset($_GET['category'])) {
 			$category = $this->categoriesTable->findById($_GET['category']);
 			$jokes = $category->getJokes();
 		} else {
 			$jokes = $this->jokesTable->findAll();
 		}
+
+		$categories = $this->categoriesTable->findAll();
 	 
 		$title = 'Benvenuto nel blog dei Joke!';
 		
-		return ['title' => $title, 'variabili' => ['joke' => $jokes, 'categories' => $this->categoriesTable->findAll()], 'template' => 'article.html.php'];
+		return ['title' => $title, 'variabili' => ['joke' => $jokes, 'categories' => $categories, 'user' => $author], 'template' => 'article.html.php'];
 	}
 	
 	public function delete(){
@@ -36,7 +39,7 @@ class JokesController {
 		
 		$joke = $this->jokesTable->findById($_POST['id']);
 		
-		if($joke->authorid != $author->id){
+		if($joke->authorid != $author->id && !$author->hasPermission(\Ijdb\Entity\Author::DELETE_JOKES)){
 				return;
 		}
 
@@ -52,8 +55,9 @@ class JokesController {
 			$title = 'Aggiorna Joke';
 		}
 		$title = 'Inserisci un Joke';
-		return ['template' => 'form.html.php', 'title' => $title, 'variabili' => [ 'joke' => $joke ?? null, 'userId' => $author->id, 'categories' => $categories]];
+		return ['template' => 'form.html.php', 'title' => $title, 'variabili' => [ 'joke' => $joke ?? null, 'user' => $author, 'categories' => $categories]];
 	}
+	
 	public function saveEdit(){
 		$author = $this->authentication->getUser();
 		$joke = $_POST['joke'];

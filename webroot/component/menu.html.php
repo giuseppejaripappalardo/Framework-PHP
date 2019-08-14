@@ -13,16 +13,14 @@
 				<li class="nav-item active">
 				<a class="nav-link" href="/joke/edit">Inserisci Joke <span class="sr-only">(current)</span></a>
 				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Gestione categorie</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="/category/index">Lista</a>
+				<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="/category/edit">Inserisci</a>
+				</div>
             </ul>
-            <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Categorie
-                </button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <a class="nav-link" href="/category/index">Lista <span class="sr-only">(current)</span></a>
-                    <a class="nav-link" href="/category/edit">Inserisci <span class="sr-only">(current)</span></a>
-                </div>
-            </div>
 			<?php endif; ?>
 		<?php if(isset($joke)): ?>
 		<button type="button" class="btn btn-primary">

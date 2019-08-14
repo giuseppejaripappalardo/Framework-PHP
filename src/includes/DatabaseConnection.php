@@ -3,7 +3,7 @@
 $debug = true;
 
 try{
-	$pdo = new PDO('mysql:host=localhost;dbname=GjServer;charset=utf8', 'g.pappalardo', 'roccerirva48');
+	$pdo = new PDO('mysql:host=gjnas.serveftp.com;dbname=GjServer;charset=utf8', 'g.pappalardo', 'Roccerirva48@');
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	if(isset($debug) && $debug === true) {
 		$output = "Connessione MySQL stabilita";

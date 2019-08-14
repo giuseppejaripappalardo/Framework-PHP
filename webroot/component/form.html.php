@@ -1,5 +1,5 @@
 <div class="container">
-<?php if( empty($joke->authorid) || $joke->authorid == $joke->authorid): ?>
+<?php if( empty($joke->authorid) || $user->id == $joke->authorid || $user->hasPermission(\Ijdb\Entity\Author::EDIT_JOKES)): ?>
   <form class="was-validated" action="/joke/edit" method="post">
     <div class="mb-3">
       <label for="validationTextarea">Inserisci Barzelletta</label>

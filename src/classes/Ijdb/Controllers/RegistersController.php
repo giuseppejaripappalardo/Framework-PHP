@@ -1,6 +1,8 @@
 <?php
 
 namespace Ijdb;
+
+use Exception;
 use Framework\DatabaseTable;
 
 class RegistersController {
@@ -73,5 +75,38 @@ class RegistersController {
         } else {
             return ['template' => 'register.html.php', 'variabili' => ['error' => $error, 'author' => $author], 'title' => 'Si è verificato un errore'];
         }
+    }
+
+    public function index(){
+        $authors = $this->authorsTable->findAll();
+
+        return ['template' => 'authorslist.html.php', 'title' => 'Elenco utenti', 'variabili' => ['authors' => $authors]];
+    }
+
+    public function delete(){
+        $delete = $this->authorsTable->delete($_POST['id']);
+        header('location: /author/index');
+    }
+
+    public function permissions() {
+        if(isset($_GET['id'])){
+            $author = $this->authorsTable->findById($_GET['id']);
+            $reflected = new \ReflectionClass('\Ijdb\Entity\Author');
+            $constants = $reflected->getConstants();
+        } else {
+           throw new Exception('Utente non identificato, riprovare.', 404);
+        }
+
+        return ['template' => 'editpermissions.html.php', 'title' => 'Modifica competenze', 'variabili' => ['author' => $author, 'permissions' => $constants ?? '']];
+    }
+
+    public function savePermission() {
+        $author = [
+            'id' => $_GET['id'],
+            'permissions' => array_sum($_POST['permissions'] ?? [])
+        ];
+        $this->authorsTable->save($author);
+        
+        header('location: /author/index');
     }
 }

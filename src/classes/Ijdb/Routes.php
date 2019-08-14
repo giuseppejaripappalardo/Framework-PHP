@@ -24,6 +24,15 @@ class Routes implements \Framework\Routes {
 			$this->authentication = new Authentication($this->authorsTable, 'username', 'password');
 		}
 
+		public function checkPermission($permission): bool {
+			$user = $this->authentication->getUser();
+			if($user && $user->hasPermission($permission)){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 		public function getRoutes() : array
 		{
 			$jokesController = new JokesController($this->jokesTable, $this->authorsTable, $this->categoriesTable, $this->authentication);
@@ -116,15 +125,41 @@ class Routes implements \Framework\Routes {
 						'controller' => $categoriesController,
 						'action' => 'index'
 					],
-					'login' => true
+					'login' => true,
+					'permissions' => \Ijdb\Entity\Author::LIST_CATEGORIES,
 				],
 				'category/delete' => [
 					'POST' => [
 						'controller' => $categoriesController,
 						'action' => 'delete'
 					],
-					'login' => true
+					'login' => true,
+					'permissions' => \Ijdb\Entity\Author::REMOVE_CATEGORIES,
 				],
+				'author/permissions' => [
+					'GET' => [
+						'controller' => $registersController,
+						'action' => 'permissions'
+					],
+					'POST' => [
+						'controller' => $registersController,
+						'action' => 'savePermission',
+					],
+					'login' => true,
+					'permissions' => \Ijdb\Entity\Author::EDIT_USER_ACCESS
+				],
+				'author/index' => [
+					'GET' => [
+						'controller' => $registersController,
+						'action' => 'index'
+					],
+					'POST' => [
+						'controller' => $registersController,
+						'action' => 'delete'
+					],
+				'login' => true,
+				'permissions' => \Ijdb\Entity\Author::EDIT_USER_ACCESS
+				]
 			];
 			return $routes;
 	}
