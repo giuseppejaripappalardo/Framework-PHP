@@ -19,18 +19,24 @@ class JokesController {
 
 	public function index(){
 		$author = $this->authentication->getUser();
+		$pageLimit = 5;
+		$page = $_GET['page'] ?? 1;
+		$offset = ($page-1) * $pageLimit;
+
 		if(isset($_GET['category'])) {
 			$category = $this->categoriesTable->findById($_GET['category']);
-			$jokes = $category->getJokes();
+			$jokes = $category->getJokes($pageLimit, $offset);
+			$count = $category->getNumJokes();
 		} else {
-			$jokes = $this->jokesTable->findAll('jokedate DESC');
+			$jokes = $this->jokesTable->findAll('jokedate DESC', $pageLimit, $offset);
+			$count = $this->jokesTable->findCount();
 		}
 
 		$categories = $this->categoriesTable->findAll();
 	 
 		$title = 'Benvenuto nel blog dei Joke!';
 		
-		return ['title' => $title, 'variabili' => ['joke' => $jokes, 'categories' => $categories, 'user' => $author], 'template' => 'article.html.php'];
+		return ['title' => $title, 'variabili' => ['joke' => $jokes, 'categories' => $categories, 'user' => $author, 'count' => $count, 'pageLimit' => $pageLimit, 'currentPage' => $page, 'categoryid' => $_GET['category'] ?? null], 'template' => 'article.html.php'];
 	}
 	
 	public function delete(){

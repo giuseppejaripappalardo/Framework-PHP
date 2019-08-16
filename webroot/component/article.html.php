@@ -55,5 +55,19 @@
             </div>
         </div>
         <?php endif ?>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <?php
+                $count = ceil($count / $pageLimit);
+                for($i = 1; $i <= $count; $i++):
+                    if($i == $currentPage):
+            ?>
+            <li class="page-item active"><a class="page-link" href="/joke/index?page=<?=$i?><?=!empty($categoryid) ? '&category=' . $categoryid : ''?>"><?=$i?></a></li>;
+            <?php else: ?>
+            <li class="page-item"><a class="page-link" href="/joke/index?page=<?=$i?><?=!empty($categoryid) ? '&category=' . $categoryid : ''?>"><?=$i?></a></li>
+            <?php endif; ?>
+            <?php endfor; ?>
+        </ul>
+    </nav>
     </article>
 </div>

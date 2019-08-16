@@ -33,13 +33,32 @@ class DatabaseTable
 		return $fields;
 	}
 	
-	public function findAll($orderBy = null) {
+	public function findAll($orderBy = null, $limit = null, $offset = null) {
 		$query = 'SELECT * FROM ' . $this->table;
 		if($orderBy != null){
 			$query .= ' ORDER BY ' . $orderBy;
 		}
+		if($limit != null){
+			$query .= ' LIMIT ' . $limit;
+		}
+
+		if($offset != null){
+			$query .= ' OFFSET ' . $offset;
+		}
+
 		$save = $this->query($query);
 		return $save->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
+	}
+
+	public function findCount($field = null, $value = null){
+		$query = 'SELECT COUNT(*) FROM ' . $this->table;
+		$parameters = [];
+		if(!empty($field)){
+			$query .= ' WHERE `' . $field . '` = :value';
+			$parameters = ['value' => $value];
+		}
+		$save = $this->query($query, $parameters);
+		return $save->fetchAll()[0]['COUNT(*)'];
 	}
 	
 	public function findById(int $value) {
@@ -49,12 +68,21 @@ class DatabaseTable
 		return $save->fetchObject($this->className, $this->constructorArgs);
 	}
 
-	public function findByField($column, $value, $orderBy = null) {
+	public function findByField($column, $value, $orderBy = null, $limit = null, $offset = null) {
 		$query = 'SELECT * FROM `' . $this->table . '` WHERE `' . $column . '` = :value';
 		$fields = ['value' => $value];
-		if($orderBy != null){
+		if ($orderBy != null){
 			$query .= ' ORDER BY ' . $orderBy;
 		}
+
+		if ($limit != null){
+			$query .= ' LIMIT ' . $limit;
+		}
+
+		if($offset != null){
+			$query .= ' OFFSET ' . $offset;
+		}
+
 		$save = $this->query($query, $fields);
 		return $save->fetchAll(\PDO::FETCH_CLASS, $this->className, $this->constructorArgs);
 	}
